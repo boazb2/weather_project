@@ -1,11 +1,13 @@
 import pandas as pd
+import mysql.connector
+from mysql.connector import Error
 from telegram.ext import Updater, CommandHandler, ConversationHandler, MessageHandler, Filters
 
 # Create an empty DataFrame to store user data
-df = pd.DataFrame(columns=['Username', 'First Name', 'Last Name', 'City'])
+df = pd.DataFrame(columns=['Username', 'First Name', 'Last Name', 'Email'])
 
 # Define conversation states
-USERNAME, FIRST_NAME, LAST_NAME, CITY = range(4)
+USERNAME, FIRST_NAME, LAST_NAME, EMAIL = range(4)
 
 def start(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="Please enter your username.")
@@ -37,22 +39,34 @@ def handle_last_name(update, context):
     # Save the last name in the DataFrame
     df.loc[update.effective_user.id, 'Last Name'] = last_name
 
-    # Ask for the user's city name
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Please enter your city name.")
-    return CITY
+    # Ask for the user's email name
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Please enter you email")
+    return EMAIL
 
-def handle_city(update, context):
-    city = update.message.text
+def handle_email(update, context):
+    email = update.message.text
 
     # Save the city name in the DataFrame
-    df.loc[update.effective_user.id, 'City'] = city
+    df.loc[update.effective_user.id, 'Email'] = email
 
     # Inform the user that the data has been stored
     context.bot.send_message(chat_id=update.effective_chat.id, text="Thank you! Your data has been stored.")
 
-    # Print the DataFrame (optional)
-    print(df)
+ 
+    sql_insert_to_user = f"Insert into users (user_name,first_name,last_name,email) values ('{str(df['Username'].values[0])}','{str(df['First Name'].values[0])}','{str(df['Last Name'].values[0])}','{str(df['Email'].values[0])}')"
+    print(sql_insert_to_user)
 
+    conn = mysql.connector.connect(
+    host='cnt7-naya-cdh63',
+    user='nifi',
+    password='NayaPass1!',
+    database='weather_db'
+)
+
+    cursor = conn.cursor()
+    cursor.execute(sql_insert_to_user)
+    conn.commit()
+    
     return ConversationHandler.END
 
 def cancel(update, context):
@@ -70,7 +84,7 @@ def main():
             USERNAME: [MessageHandler(Filters.text & (~Filters.command), handle_username)],
             FIRST_NAME: [MessageHandler(Filters.text & (~Filters.command), handle_first_name)],
             LAST_NAME: [MessageHandler(Filters.text & (~Filters.command), handle_last_name)],
-            CITY: [MessageHandler(Filters.text & (~Filters.command), handle_city)],
+            EMAIL: [MessageHandler(Filters.text & (~Filters.command), handle_email)],
         },
         fallbacks=[CommandHandler('cancel', cancel)]
     )

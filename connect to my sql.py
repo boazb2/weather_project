@@ -10,7 +10,7 @@ conn = mysql.connector.connect(
 )
 
 # Query to fetch data from the table
-query = "SELECT * FROM Users"
+query = "SELECT * FROM users"
 
 # Fetch data into a pandas DataFrame
 df = pd.read_sql_query(query, conn)
