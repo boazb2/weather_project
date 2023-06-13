@@ -1,6 +1,7 @@
 from kafka import KafkaConsumer
 import json
 import pandas as pd
+from telegram.ext import Updater
 
 # Kafka consumer setup
 bootstrap_servers = 'cnt7-naya-cdh63:9092'  # Replace with the appropriate broker address
@@ -22,5 +23,11 @@ for message in consumer:
     df = pd.DataFrame([(key, value_dict[key]['main']['feels_like']) for key in value_dict.keys()], columns=['name', 'feels_like'])
     print(df)
 
+################################################################
+
+
+
+
+################################################################
 # Close the consumer
 consumer.close()
