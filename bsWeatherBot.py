@@ -53,8 +53,9 @@ def handle_email(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="Thank you! Your data has been stored.")
 
  
-    sql_insert_to_user = f"Insert into users (user_name,first_name,last_name,email) values ('{str(df['Username'].values[0])}','{str(df['First Name'].values[0])}','{str(df['Last Name'].values[0])}','{str(df['Email'].values[0])}')"
-    print(sql_insert_to_user)
+    #sql_insert_to_user = f"Insert into users (user_name,first_name,last_name,email) values ('{str(df['Username'].values[0])}','{str(df['First Name'].values[0])}','{str(df['Last Name'].values[0])}','{str(df['Email'].values[0])}')"
+    #print(sql_insert_to_user)
+    print(df)
 
     conn = mysql.connector.connect(
     host='cnt7-naya-cdh63',
@@ -64,8 +65,8 @@ def handle_email(update, context):
 )
 
     cursor = conn.cursor()
-    cursor.execute(sql_insert_to_user)
-    conn.commit()
+   # cursor.execute(sql_insert_to_user)
+   # conn.commit()
     
     return ConversationHandler.END
 
@@ -73,6 +74,16 @@ def cancel(update, context):
     # Cancel the conversation
     context.bot.send_message(chat_id=update.effective_chat.id, text="The conversation has been cancelled.")
     return ConversationHandler.END
+
+def respond_to_user(update, context):
+    email = update.message.text
+
+    # Save the city name in the DataFrame
+    df.loc[update.effective_user.id, 'Email'] = email
+
+    # Inform the user that the data has been stored
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Thank you! Your data has been stored.")
+
 
 def main():
     updater = Updater(token="5993334898:AAHCOt1GTVEW3_0FY-wEWmyMvnt71VceloM", use_context=True)
