@@ -4,7 +4,7 @@ from mysql.connector import Error
 from telegram.ext import Updater, CommandHandler, ConversationHandler, MessageHandler, Filters
 
 # Create an empty DataFrame to store user data
-df = pd.DataFrame(columns=['Username', 'First Name', 'Last Name', 'Email'])
+df = pd.DataFrame(columns=['bot_user_id','Username', 'First Name', 'Last Name', 'Email'])
 
 # Define conversation states
 USERNAME, FIRST_NAME, LAST_NAME, EMAIL = range(4)
@@ -53,7 +53,7 @@ def handle_email(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="Thank you! Your data has been stored.")
 
  
-    #sql_insert_to_user = f"Insert into users (user_name,first_name,last_name,email) values ('{str(df['Username'].values[0])}','{str(df['First Name'].values[0])}','{str(df['Last Name'].values[0])}','{str(df['Email'].values[0])}')"
+    sql_insert_to_user = f"Insert into users (user_name,first_name,last_name,email,bot_user_id) values ('{str(df['Username'].values[0])}','{str(df['First Name'].values[0])}','{str(df['Last Name'].values[0])}','{str(df['Email'].values[0])}',{update.effective_chat.id})"
     #print(sql_insert_to_user)
     print(df)
 
@@ -65,8 +65,8 @@ def handle_email(update, context):
 )
 
     cursor = conn.cursor()
-   # cursor.execute(sql_insert_to_user)
-   # conn.commit()
+    cursor.execute(sql_insert_to_user)
+    conn.commit()
     
     return ConversationHandler.END
 

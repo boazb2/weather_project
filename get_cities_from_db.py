@@ -12,6 +12,10 @@ def get_cities_array (query):
     df =  pd.read_sql_query(query, conn)
     return df['city_name'].values
 
-df2 = get_cities_array("SELECT city_name FROM users_cities")
+def get_users_cities (query):
+    df = pd.read_sql_query(query,conn)
+    return df
 
-print(df2)
+df2 = get_cities_array("SELECT distinct city_name FROM users_cities")
+
+#print(df2)
