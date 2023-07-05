@@ -22,7 +22,7 @@ try:
         #df = pd.DataFrame([(key, value_dict[key]['main']['feels_like']) for key in value_dict.keys()], columns=['name', 'feels_like'])
 
         # Call the 'main' function from sentmessage.py
-        #sm.main('483699123', '5993334898:AAHCOt1GTVEW3_0FY-wEWmyMvnt71VceloM', df)  # Replace 'YOUR_BOT_TOKEN' with your actual Telegram bot token
+        sm.main('483699123', '5993334898:AAHCOt1GTVEW3_0FY-wEWmyMvnt71VceloM', df)  # Replace 'YOUR_BOT_TOKEN' with your actual Telegram bot token
 
         print(df)
         

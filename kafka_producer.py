@@ -9,7 +9,14 @@ api_key = "d4593bcce04eda71196c6bcf156b3eea"
 # Getting the required cities for a user request
 
 cities_list = gc.get_cities_array("SELECT distinct city_name FROM users_cities")
-users_cities_df = gc.get_users_cities("SELECT uc.bot_user_id,uc.city_name,u.first_name,u.last_name FROM users_cities uc join users u on uc.bot_user_id = u.bot_user_id")
+
+data_str = ("SELECT uc.bot_user_id, uc.city_name, u.first_name, u.last_name, uct.temprature "
+            "FROM users_cities uc "
+            "JOIN users u ON uc.bot_user_id = u.bot_user_id "
+            "JOIN user_city_temprature uct ON u.bot_user_id = uct.bot_user_id")
+
+
+users_cities_df = gc.get_users_cities(data_str)
 
 weather_data = weather.get_weather_data(api_key, cities_list)
 
