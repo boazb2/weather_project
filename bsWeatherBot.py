@@ -2,7 +2,7 @@ import pandas as pd
 import mysql.connector
 from mysql.connector import Error
 from telegram.ext import Updater, CommandHandler, ConversationHandler, MessageHandler, Filters
-
+i
 # Create an empty DataFrame to store user data
 df = pd.DataFrame(columns=['bot_user_id','Username', 'First Name', 'Last Name', 'Email','City','Temprature'])
 
