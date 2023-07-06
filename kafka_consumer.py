@@ -19,15 +19,13 @@ try:
         
         data = json.loads(value_dict)
         df = pd.json_normalize(data)
-        #df = pd.DataFrame([(key, value_dict[key]['main']['feels_like']) for key in value_dict.keys()], columns=['name', 'feels_like'])
-
-        # Call the 'main' function from sentmessage.py
-        sm.main('483699123', '5993334898:AAHCOt1GTVEW3_0FY-wEWmyMvnt71VceloM', df)  # Replace 'YOUR_BOT_TOKEN' with your actual Telegram bot token
-
-        print(df)
         
 
-          
+        # Call the 'main' function from sentmessage.py
+        sm.main('483699123','5993334898:AAHCOt1GTVEW3_0FY-wEWmyMvnt71VceloM',df)  # Replace 'YOUR_BOT_TOKEN' with your actual Telegram bot token
+        print(df)
+              
+      
 # Handle any exceptions and ensure consumer is closed
 finally:
     consumer.close()
